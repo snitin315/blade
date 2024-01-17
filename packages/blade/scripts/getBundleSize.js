@@ -52,10 +52,10 @@ const main = () => {
     gzip: true,
   });
 
-  // fs.writeFileSync(
-  //   path.resolve(__dirname, '../.size-limit.json'),
-  //   JSON.stringify(sizeLimitConfig, null, 2),
-  // );
+  fs.writeFileSync(
+    path.resolve(__dirname, '../.size-limit.json'),
+    JSON.stringify(sizeLimitConfig, null, 2),
+  );
 
   // Run the size-limit command
   try {
