@@ -52,10 +52,10 @@ const main = () => {
     gzip: true,
   });
 
-  fs.writeFileSync(
-    path.resolve(__dirname, '../.size-limit.json'),
-    JSON.stringify(sizeLimitConfig, null, 2),
-  );
+  // fs.writeFileSync(
+  //   path.resolve(__dirname, '../.size-limit.json'),
+  //   JSON.stringify(sizeLimitConfig, null, 2),
+  // );
 
   // Run the size-limit command
   try {
@@ -71,22 +71,17 @@ const main = () => {
       jsonLikeString.substring(jsonLikeString.indexOf('['), jsonLikeString.indexOf(']') + 1),
     );
 
-    const BUNDLE_SIZE_DATA = {
-      nodes: sizes,
-    };
-
     const story = fs.readFileSync(
       path.resolve(__dirname, '../docs/utils/bundleSizeReport.stories.mdx'),
       'utf-8',
     );
-    const updatedStory = story.replace(/BUNDLE_SIZE_DATA/g, JSON.stringify(BUNDLE_SIZE_DATA));
+    const updatedStory = story.replace(/BUNDLE_SIZE_DATA/g, JSON.stringify(sizes));
     fs.writeFileSync(
       path.resolve(__dirname, '../docs/utils/bundleSizeReport.stories.mdx'),
       updatedStory,
     );
   } catch (error) {
-    //throw new Error(error);
-    //console.log('🚀 ~ main ~ error:', error);
+    throw new Error(error);
   }
 };
 

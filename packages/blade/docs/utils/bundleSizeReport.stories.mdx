@@ -1,58 +1,36 @@
-
 import { Meta } from '@storybook/addon-docs';
-import { Badge } from '~components/Badge';
-import {
-Table,
-TableHeader,
-TableHeaderRow,
-TableHeaderCell,
-TableBody,
-TableRow,
-TableCell,
-} from '~components/Table';
+import { Text } from '~components/Typography';
+import { Table } from '~utils/storybook/PopoverVsTooltip';
 
 <Meta title="Utils/Bundle Size" />
 
 # Bundle Size Report
 
-<Table data={BUNDLE_SIZE_DATA}>
-  {(tableData) => (
-    <>
-      <TableHeader>
-        <TableHeaderRow>
-          <TableHeaderCell>Component</TableHeaderCell>
-          <TableHeaderCell>Size</TableHeaderCell>
-          <TableHeaderCell>Size Limit</TableHeaderCell>
-          <TableHeaderCell>Passed</TableHeaderCell>
-        </TableHeaderRow>
-      </TableHeader>
-      <TableBody>
+export const BundleSizeReport = () => {
+  const tableData= BUNDLE_SIZE_DATA;
+
+  return (
+    <Table >
+      <thead>
+        <tr>
+          <th align="left">
+            Component
+          </th>
+          <th align="left">
+            Size
+          </th>
+        </tr>
+      </thead>
+      <tbody>
         {tableData.map((tableItem, index) => (
-          <TableRow key={index} item={tableItem}>
-            <TableCell>{tableItem.name}</TableCell>
-            <TableCell>{`${tableItem.size/1000} kB`}</TableCell>
-            <TableCell>
-              {`${tableItem.sizeLimit/1000} kB`}
-            </TableCell>
-            <TableCell>
-             <Badge
-                size="medium"
-                color={
-                  tableItem.status === 'Completed'
-                    ? 'positive'
-                    : tableItem.status === 'Pending'
-                    ? 'notice'
-                    : tableItem.status === 'Failed'
-                    ? 'negative'
-                    : 'default'
-                }
-                >
-                {tableItem.passed ? 'Passed' : 'Failed'}
-                </Badge>
-            </TableCell>
-          </TableRow>
+          <tr key={index} item={tableItem}>
+            <td key={index}> <Text weight="bold"> {tableItem.name} </Text></td>
+            <td key={index}>{`${tableItem.size/1000} kB`}</td>
+          </tr>
         ))}
-      </TableBody>
-    </>
-  )}
-</Table>
+      </tbody>    
+    </Table>
+  );
+};
+
+<BundleSizeReport />
