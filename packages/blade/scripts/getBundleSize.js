@@ -33,6 +33,7 @@ const main = () => {
           name: componentName,
           path: './build/lib/web/production/components/index.js',
           import: `{ ${componentName} }`,
+          // Set high limit for the component size so that it doesn't fail the size-limit check
           limit: '200 kb',
           running: false,
           gzip: true,
@@ -41,8 +42,9 @@ const main = () => {
     },
   });
 
-  sizeLimitConfig.push({
-    name: 'Import all components',
+  // All components import
+  sizeLimitConfig.unshift({
+    name: '*',
     path: './build/lib/web/production/components/index.js',
     import: '*',
     limit: '200 kb',
