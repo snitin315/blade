@@ -127,7 +127,7 @@
     "watch:test:react-native": "yarn test:react-native --watch --onlyChanged",
     "chromatic": "npx chromatic",
     "publish-npm": "node ./scripts/publishToNpm.js",
-    "bundle-size": "node ./scripts/getBundleSize.js",
+    "bundle-size": "NODE_OPTIONS=--max_old_space_size=8096 node ./scripts/getBundleSize.js",
     "generate-github-npmrc": "node ./scripts/generateGitHubRegistryNpmrc.js",
     "postinstall": "patch-package"
   },
