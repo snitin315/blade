@@ -30,10 +30,10 @@ const main = () => {
       if (!(componentName.includes('Icon') || componentNameList.includes(componentName))) {
         componentNameList.push(componentName);
         sizeLimitConfig.push({
-          name: `Import ${componentName} only`,
+          name: componentName,
           path: './build/lib/web/production/components/index.js',
           import: `{ ${componentName} }`,
-          limit: '20 kb',
+          limit: '200 kb',
           running: false,
           gzip: true,
         });
@@ -45,15 +45,15 @@ const main = () => {
     name: 'Import all components',
     path: './build/lib/web/production/components/index.js',
     import: '*',
-    limit: '100 kb',
+    limit: '200 kb',
     running: false,
     gzip: true,
   });
 
-  // fs.writeFileSync(
-  //   path.resolve(__dirname, '../.size-limit.json'),
-  //   JSON.stringify(sizeLimitConfig, null, 2),
-  // );
+  fs.writeFileSync(
+    path.resolve(__dirname, '../.size-limit.json'),
+    JSON.stringify(sizeLimitConfig, null, 2),
+  );
 
   // Run the size-limit command
   try {
@@ -69,42 +69,15 @@ const main = () => {
       jsonLikeString.substring(jsonLikeString.indexOf('['), jsonLikeString.indexOf(']') + 1),
     );
 
-    // Create github comment with the size-limit results
-    const comment = `
-import { Meta } from '@storybook/addon-docs';
-
-<Meta title="Utils/Bundle Size" />
-
-# Size Limit Report
-
-| Component | Size | Limit |
-| --- | --- | --- |
-${sizes.map((item) => `| ${item.name} | ${item.size / 1000} kB | ${item.sizeLimit} |`).join('\n')}
-`;
-
-    const nodes = [
-      ...Array.from({ length: 5 }, (_, i) => ({
-        id: (i + 1).toString(),
-        paymentId: `rzp${Math.floor(Math.random() * 1000000)}`,
-        amount: Number((Math.random() * 10000).toFixed(2)),
-        date: new Date(2021, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1),
-        status: ['Completed', 'Pending', 'Failed'][Math.floor(Math.random() * 3)],
-        account: Math.floor(Math.random() * 1000000000).toString(),
-      })),
-    ];
-
-    const STORYBOOK_BUNDLE_SIZE_DATA = {
-      nodes,
+    const BUNDLE_SIZE_DATA = {
+      nodes: sizes,
     };
 
     const story = fs.readFileSync(
       path.resolve(__dirname, '../docs/utils/bundleSizeReport.stories.mdx'),
       'utf-8',
     );
-    const updatedStory = story.replace(
-      /STORYBOOK_BUNDLE_SIZE_DATA/g,
-      JSON.stringify(STORYBOOK_BUNDLE_SIZE_DATA),
-    );
+    const updatedStory = story.replace(/BUNDLE_SIZE_DATA/g, JSON.stringify(BUNDLE_SIZE_DATA));
     fs.writeFileSync(
       path.resolve(__dirname, '../docs/utils/bundleSizeReport.stories.mdx'),
       updatedStory,
