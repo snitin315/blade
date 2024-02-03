@@ -20,7 +20,6 @@ jobs:
         uses: ./.github/actions/install-dependencies
       - name: Danger
         uses: danger/danger-js@11.2.6
-        working-directory: packages/blade
       #   - name: Build Blade
       #     run: yarn run-s build:clean build:generate-types build:react-prod
       #     working-directory: packages/blade

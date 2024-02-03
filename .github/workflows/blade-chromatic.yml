@@ -20,12 +20,6 @@ jobs:
           node-version: 18.12.1
       - name: Setup Cache & Install Dependencies
         uses: ./.github/actions/install-dependencies
-      - name: Build Blade
-        run: yarn run-s build:clean build:generate-types build:react-prod
-        working-directory: packages/blade
-      - name: Update Bundle Size Data
-        run: yarn bundle-size
-        working-directory: packages/blade
       - name: Publish to Chromatic
         uses: chromaui/action@v1
         with:

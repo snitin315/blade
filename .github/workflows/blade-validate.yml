@@ -21,9 +21,6 @@ jobs:
       - name: Build Blade
         run: yarn build
         working-directory: packages/blade
-      - name: Update Bundle Size Data
-        run: yarn bundle-size
-        working-directory: packages/blade
       - name: Lint Source Code
         run: yarn lint
       - name: Run TypeScript Checks
