@@ -18,17 +18,15 @@ jobs:
           node-version: 18.12.1
       - name: Setup Cache & Install Dependencies
         uses: ./.github/actions/install-dependencies
+      - name: Build Blade
+        run: yarn run-s build:clean build:generate-types build:react-prod
+        working-directory: packages/blade
+      - name: Update Bundle Size Data
+        run: yarn bundle-size
+        working-directory: packages/blade
       - name: Danger
         run: yarn danger ci
         working-directory: packages/blade
         env:
-          GITHUB_TOKEN: ${{ env.GITHUB_ACCESS_TOKEN }}
           DANGER_GITHUB_API_TOKEN: ${{ env.GITHUB_ACCESS_TOKEN }}
           DANGER_DISABLE_TRANSPILATION: 'true'
-
-      #   - name: Build Blade
-      #     run: yarn run-s build:clean build:generate-types build:react-prod
-      #     working-directory: packages/blade
-      #   - name: Update Bundle Size Data
-      #     run: yarn bundle-size
-      #     working-directory: packages/blade
