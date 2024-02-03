@@ -211,4 +211,4 @@ const PopoverVsTooltip = (): React.ReactElement => {
   );
 };
 
-export { PopoverVsTooltip, Table };
+export { PopoverVsTooltip };

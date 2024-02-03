@@ -1,0 +1,29 @@
+name: Blade DangerJS
+
+on: [pull_request]
+
+env:
+  GITHUB_ACCESS_TOKEN: ${{ secrets.CI_BOT_TOKEN }}
+
+jobs:
+  validate:
+    name: DangerJS
+    runs-on: ubuntu-latest # nosemgrep: non-self-hosted-runner
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+      - name: Use Node v18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.12.1
+      - name: Setup Cache & Install Dependencies
+        uses: ./.github/actions/install-dependencies
+      - name: Danger
+        uses: danger/danger-js@11.2.6
+        working-directory: packages/blade
+      #   - name: Build Blade
+      #     run: yarn run-s build:clean build:generate-types build:react-prod
+      #     working-directory: packages/blade
+      #   - name: Update Bundle Size Data
+      #     run: yarn bundle-size
+      #     working-directory: packages/blade

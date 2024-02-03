@@ -35,8 +35,6 @@ const main = () => {
       const componentName = node.exported.name;
       // We don't want to add Icon components to the size-limit configuration
       if (!(componentName.includes('Icon') || excludedComponents.includes(componentName))) {
-        console.log('🚀 Analyzing: ', componentName);
-
         fs.writeFileSync(
           path.resolve(__dirname, '../.size-limit.json'),
           JSON.stringify(
@@ -46,7 +44,7 @@ const main = () => {
                 path: './build/lib/web/production/components/index.js',
                 import: `{ ${componentName} }`,
                 // Set high limit for the component size so that it doesn't fail the size-limit check
-                limit: '200 kb',
+                limit: '2000 kb',
                 running: false,
                 gzip: true,
               },
@@ -73,17 +71,7 @@ const main = () => {
     },
   });
 
-  const story = fs.readFileSync(
-    path.resolve(__dirname, '../docs/utils/bundleSizeReport.stories.mdx'),
-    'utf-8',
-  );
-
-  const updatedStory = story.replace(/BUNDLE_SIZE_DATA/g, JSON.stringify(sizes));
-
-  fs.writeFileSync(
-    path.resolve(__dirname, '../docs/utils/bundleSizeReport.stories.mdx'),
-    updatedStory,
-  );
+  fs.writeFileSync(path.resolve(__dirname, 'bundleSizeReport.json'), JSON.stringify(sizes));
 };
 
 main();
