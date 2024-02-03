@@ -1,6 +1,5 @@
-import { danger, message } from 'danger';
-
-const generateBundleDiff = require('./packages/blade/scripts/generateBundleDiff');
+const { danger, message } = require('danger');
+const generateBundleDiff = require('./scripts/generateBundleDiff');
 
 const showBundleSizeDiff = async () => {
   const { diffTable } = await generateBundleDiff(danger);

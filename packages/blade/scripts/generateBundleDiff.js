@@ -1,4 +1,4 @@
-const generateBundleDiff = async (danger) => {
+const generateBundleDiff = async () => {
   let baseBundleSizeStats = [];
   // Get the base bundle size report from the master branch
   const baseBundleStatsURL =
@@ -12,7 +12,7 @@ const generateBundleDiff = async (danger) => {
 
   // eslint-disable-next-line import/extensions
   const currentBundleSizeStats = require('../PRBundleSizeStats.json');
-  let bundleDiff = [];
+  let bundleDiff = currentBundleSizeStats;
 
   if (baseBundleSizeStats.length > 0) {
     bundleDiff = baseBundleSizeStats.filter(
@@ -21,23 +21,22 @@ const generateBundleDiff = async (danger) => {
     );
   }
 
-  if (bundleDiff.length > 0) {
-    const diffTable = `
+  const diffTable = `
   | Component | Base Size | Current Size | Diff |
   | --- | --- | --- | --- |
   ${bundleDiff
     .map(
       ({ name, size: baseSize }) =>
-        `| ${name} | ${baseSize} | ${
-          currentBundleSizeStats.find((stat) => stat.name === name).size
-        } | ${currentBundleSizeStats.find((stat) => stat.name === name).size - baseSize} |`,
+        `| ${name} | ${baseBundleSizeStats.length === 0 ? '-' : baseSize} | ${
+          currentBundleSizeStats.find((stat) => stat.name === name).size / 1000
+        } | ${
+          (currentBundleSizeStats.find((stat) => stat.name === name).size - baseSize) / 1000
+        } kb |`,
     )
     .join('\n')}
   `;
-    return { bundleDiff, diffTable };
-  }
 
-  return { bundleDiff: currentBundleSizeStats, diffTable: 'No bundle size changes detected' };
+  return { diffTable };
 };
 
 module.exports = generateBundleDiff;

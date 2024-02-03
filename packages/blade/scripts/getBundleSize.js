@@ -71,7 +71,8 @@ const main = () => {
     },
   });
 
-  fs.writeFileSync(path.resolve(__dirname, 'bundleSizeReport.json'), JSON.stringify(sizes));
+  const filename = process.env.BUNDLE_SIZE_STATS_FILENAME || 'PRBundleSizeStats.json';
+  fs.writeFileSync(path.resolve(__dirname, filename), JSON.stringify(sizes));
 };
 
 main();

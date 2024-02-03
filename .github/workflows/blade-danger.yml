@@ -19,7 +19,11 @@ jobs:
       - name: Setup Cache & Install Dependencies
         uses: ./.github/actions/install-dependencies
       - name: Danger
-        uses: danger/danger-js@11.2.6
+        run: yarn danger ci
+        working-directory: packages/blade
+        env:
+          DANGER_GITLAB_API_TOKEN: ${{ env.GITHUB_ACCESS_TOKEN }}
+
       #   - name: Build Blade
       #     run: yarn run-s build:clean build:generate-types build:react-prod
       #     working-directory: packages/blade
