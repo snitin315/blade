@@ -2,14 +2,14 @@
   {
     "name": "Button",
     "passed": true,
-    "size": 28142,
+    "size": 223142,
     "sizeLimit": 2000000,
     "loading": 0.5496484375
   },
   {
     "name": "Card",
     "passed": true,
-    "size": 38142,
+    "size": 3142,
     "sizeLimit": 2000000,
     "loading": 0.5496484375
   }

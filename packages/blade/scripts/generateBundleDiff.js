@@ -21,17 +21,32 @@ const generateBundleDiff = async () => {
     );
   }
 
+  bundleDiff.forEach((component) => {
+    const currentComponent = currentBundleSizeStats.find((stat) => stat.name === component.name);
+    const baseComponent = baseBundleSizeStats.find((stat) => stat.name === component.name);
+
+    if (baseComponent && !currentComponent) {
+      component.diffSize = -baseComponent.size;
+      component.baseSize = baseComponent.size;
+      component.prSize = 0;
+    } else if (!baseComponent && currentComponent) {
+      component.diffSize = currentComponent.size;
+      component.baseSize = 0;
+      component.prSize = currentComponent.size;
+    } else {
+      component.diffSize = currentComponent.size - baseComponent.size;
+      component.baseSize = baseComponent.size;
+      component.prSize = currentComponent.size;
+    }
+  });
+
   const diffTable = `
   | Component | Base Size | Current Size | Diff |
   | --- | --- | --- | --- |
   ${bundleDiff
     .map(
-      ({ name, size: baseSize }) =>
-        `| ${name} | ${baseBundleSizeStats.length === 0 ? '-' : baseSize} | ${
-          currentBundleSizeStats.find((stat) => stat.name === name).size / 1000
-        } | ${
-          (currentBundleSizeStats.find((stat) => stat.name === name).size - baseSize) / 1000
-        } kb |`,
+      ({ name, baseSize, prSize, diffSize }) =>
+        `| ${name} | ${baseSize / 1000} | ${prSize / 1000} | ${diffSize / 1000} kb |`,
     )
     .join('\n')}
   `;

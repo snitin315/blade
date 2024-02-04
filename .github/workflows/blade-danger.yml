@@ -30,3 +30,4 @@ jobs:
         env:
           DANGER_GITHUB_API_TOKEN: ${{ env.GITHUB_ACCESS_TOKEN }}
           DANGER_DISABLE_TRANSPILATION: 'true'
+          BASE_BUNDLE_SIZE_STATS_URL: 'https://raw.githubusercontent.com/razorpay/blade/test-bundle-size-diff/baseBundleSizeStats.json'

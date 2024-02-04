@@ -5,7 +5,7 @@ const showBundleSizeDiff = async () => {
   const { diffTable } = await generateBundleDiff(danger);
 
   markdown(`
-  ## Bundle Size Diff
+  ## Bundle Size Report
   ${diffTable}
   `);
 };
