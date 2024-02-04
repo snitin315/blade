@@ -5,5 +5,12 @@
     "size": 28142,
     "sizeLimit": 2000000,
     "loading": 0.5496484375
+  },
+  {
+    "name": "Card",
+    "passed": true,
+    "size": 38142,
+    "sizeLimit": 2000000,
+    "loading": 0.5496484375
   }
 ]
