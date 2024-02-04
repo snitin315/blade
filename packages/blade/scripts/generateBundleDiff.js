@@ -21,32 +21,41 @@ const generateBundleDiff = async () => {
     );
   }
 
+  if (bundleDiff.length === 0) {
+    return { diffTable: null };
+  }
+
   bundleDiff.forEach((component) => {
     const currentComponent = currentBundleSizeStats.find((stat) => stat.name === component.name);
     const baseComponent = baseBundleSizeStats.find((stat) => stat.name === component.name);
 
     if (baseComponent && !currentComponent) {
-      component.diffSize = -baseComponent.size;
-      component.baseSize = baseComponent.size;
+      component.diffSize = -baseComponent.size / 1000;
+      component.baseSize = baseComponent.size / 1000;
       component.prSize = 0;
+      component.isSizeIncreased = false;
     } else if (!baseComponent && currentComponent) {
-      component.diffSize = currentComponent.size;
+      component.diffSize = currentComponent.size / 1000;
       component.baseSize = 0;
-      component.prSize = currentComponent.size;
+      component.prSize = currentComponent.size / 1000;
+      component.isSizeIncreased = true;
     } else {
-      component.diffSize = currentComponent.size - baseComponent.size;
-      component.baseSize = baseComponent.size;
-      component.prSize = currentComponent.size;
+      component.diffSize = (currentComponent.size - baseComponent.size) / 1000;
+      component.baseSize = baseComponent.size / 1000;
+      component.prSize = currentComponent.size / 1000;
+      component.isSizeIncreased = component.diffSize > 0;
     }
   });
 
   const diffTable = `
-  | Component | Base Size | Current Size | Diff |
-  | --- | --- | --- | --- |
+  | Status | Component | Base Size (kb) | Current Size (kb) | Diff |
+  | --- | --- | --- | --- | --- |
   ${bundleDiff
     .map(
-      ({ name, baseSize, prSize, diffSize }) =>
-        `| ${name} | ${baseSize / 1000} | ${prSize / 1000} | ${diffSize / 1000} kb |`,
+      ({ name, baseSize, prSize, diffSize, isSizeIncreased }) =>
+        `| ${isSizeIncreased ? '🚫' : '✅'} | ${name} | ${baseSize} | ${prSize} | ${
+          isSizeIncreased ? `+${diffSize}` : diffSize
+        } kb |`,
     )
     .join('\n')}
   `;
