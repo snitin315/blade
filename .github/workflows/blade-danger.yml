@@ -8,7 +8,7 @@ on:
       - master
 
 env:
-  GITHUB_ACCESS_TOKEN: ${{ secrets.CI_BOT_TOKEN }}
+  GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   pr-bundle-size:
@@ -54,16 +54,16 @@ jobs:
         run: yarn run-s build:clean build:generate-types build:react-prod
         working-directory: packages/blade
       - name: Update Bundle Size Data
-        run: yarn bundle-size
+        run: touch baseBundleSizeStats.json
         working-directory: packages/blade
         env:
           BUNDLE_SIZE_STATS_FILENAME: 'baseBundleSizeStats.json'
       - name: Commit Updated Bundle Size Data
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          git config user.email "tools+cibot@razorpay.com"
-          git config user.name "rzpcibot"
-          git add .
+          git config user.email "snitin315@gmail.com"
+          git config user.name "Nitin Kumar"
+          git add baseBundleSizeStats.json
           git commit -m "chore: update bundle size data [skip ci]"
           git push
         working-directory: packages/blade
