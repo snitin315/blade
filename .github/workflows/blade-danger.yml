@@ -49,7 +49,7 @@ jobs:
         with:
           node-version: 18.12.1
       - name: Create File
-        run: touch a.json
+        run: touch b.json
         working-directory: packages/blade
       - name: Check if file is modified
         id: file-check
