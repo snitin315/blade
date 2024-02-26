@@ -48,25 +48,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18.12.1
-      - name: Setup Cache & Install Dependencies
-        uses: ./.github/actions/install-dependencies
-      - name: Build Blade React Production
-        run: yarn run-s build:clean build:generate-types build:react-prod
+      - name: Create File
+        run: touch a.json
         working-directory: packages/blade
-      - name: Update Bundle Size Data
-        run: yarn bundle-size
-        working-directory: packages/blade
-        env:
-          BUNDLE_SIZE_STATS_FILENAME: 'baseBundleSizeStats.json'
       - name: Check if file is modified
         id: file-check
-        run: if [ -n "$(git status baseBundleSizeStats.json --porcelain)" ]; then echo "result=true" >> $GITHUB_OUTPUT; else echo "result=false" >> $GITHUB_OUTPUT; fi
+        run: if [ -n "$(git status a.json --porcelain)" ]; then echo "result=true" >> $GITHUB_OUTPUT; else echo "result=false" >> $GITHUB_OUTPUT; fi
       - name: Commit Updated Bundle Size Data
         if: ${{ steps.file-check.outputs.result == 'true' }}
         run: |
           git config user.email "tools+cibot@razorpay.com"
           git config user.name "rzpcibot"
-          git add baseBundleSizeStats.json
+          git add a.json
           git commit -m "chore: update bundle size data [skip ci]"
           git push
         working-directory: packages/blade
